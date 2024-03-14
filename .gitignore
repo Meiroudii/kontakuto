@@ -1,0 +1,15 @@
+backend/.venv
+backend/.env
+backend/__pycache__
+frontend/node_modules/
+frontend/*.log
+
+# Output directory
+frontend/dist
+
+# @vitjs/vit temporary directory
+frontend/.vit
+
+
+frontend/.eslintcache
+
