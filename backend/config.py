@@ -1,5 +1,5 @@
 # Start in modif
-from Flask import flask
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
