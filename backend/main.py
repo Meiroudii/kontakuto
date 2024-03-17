@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import Contact, RealFriendList, Blacklist
+from models import Contact, RealFriendList, Blacklist, SpecialList
 from waitress import serve
 
 # GET all json routes in blacklist
@@ -9,6 +9,12 @@ def get_blacklist():
     blacklist = Blacklist.query.all()
     json_blacklist = list(map(lambda x: x.to_json, blacklist))
     return jsonify({"blacklist": json_blacklist})
+
+@app.route("/special-list", methods=["GET"])
+def get_speciallist():
+    speciallist = SpecialList.query.all()
+    json_speciallist = list(map(lambda x: x.to_json, speciallist))
+    return jsonify({"speciallist": json_speciallist})
 
 # GET all json routes in friendlist | view
 @app.route("/real-friends-list", methods=["GET"])

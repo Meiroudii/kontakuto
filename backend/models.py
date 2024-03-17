@@ -36,6 +36,24 @@ class Blacklist(db.Model):
                 "updatedAt": self.updated_at
                 }
 
+class SpecialList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(80), unique=False, nullable=False)
+    last_name = db.Column(db.String(80), unique=False, nullable=False)
+    personality = db.Column(db.String(80), unique=False, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+    def to_json(self):
+        return {
+                "id": self.id,
+                "firstName": self.first_name,
+                "lastNme": self.last_name,
+                "personality": self.personality,
+                "createAt": self.create_at,
+                "updatedAt": self.updated_at
+                }
 class RealFriendList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(80), unique=False, nullable=False)
