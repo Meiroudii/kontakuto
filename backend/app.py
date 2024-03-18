@@ -18,7 +18,26 @@ def create_blacklist():
     created_at = request.json.get("createdAt")
     updated_at = request.json.get("updatedAt")
 
-"""Contacts person route"""
+    if not first_name or not last_name or not created_at or not updated_at:
+        return (
+                jsonify({"message": "You must include the fist name, last name, created_at and updated_at"}),
+                400,
+        )
+    new_blacklist = Blacklist(
+            first_name=first_name,
+            last_name=last_name,
+            created_at=created_at,
+            updated_at=updated_at
+            )
+    try:
+        db.session.add(new_blacklist)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "Your hated person has been created!"}), 201
+
+"""Contact person route"""
 # GET all json routes in contacts
 @app.route("/contacts", methods=["GET"])
 def get_contacts():
@@ -36,6 +55,25 @@ def create_contact():
     email = request.json.get("email")
     phone_number = request.json.get("phoneNumber")
 
+    if not first_name or not last_name or not email or not phone_number:
+        return (
+                jsonify({"message": "You must include the fist name, last name, email and phone number"}),
+                400,
+        )
+    new_contacts = Contact(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone_number=phone_number
+            )
+    try:
+        db.session.add(new_contacts)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "The contact has been created!"}), 201
+
 """SpecialList person route"""
 @app.route("/special-list", methods=["GET"])
 def get_speciallist():
@@ -51,6 +89,25 @@ def create_special_list():
     created_at = request.json.get("createdAt")
     updated_at = request.json.get("updatedAt")
 
+    if not first_name or not last_name or not personality or not created_at or not updated_at:
+        return (
+                jsonify({"message": "You must include the fist name, last name, personality, created_at and updated_at"}),
+                400,
+        )
+    new_speciallist = SpecialList(
+            first_name=first_name,
+            last_name=last_name,
+            personality=personality,
+            created_at=created_at,
+            updated_at=updated_at
+            )
+    try:
+        db.session.add(new_speciallist)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "Your special person has been created!"}), 201
 
 
 
