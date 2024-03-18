@@ -48,10 +48,20 @@ def update_blacklist(user_id):
     blacklist.last_name = data.get("lastName", blacklist.last_name)
     blacklist.created_at = data.get("createdAt", blacklist.createdAt)
 
-
     db.session.commit()
 
     return jsonify({"message": f"The user {user_id} has been updated"}), 201
+
+@app.route("/delete-blacklist/<int:user_id>", methods="[DELETE]")
+def delete_blacklist(user_id):
+    blacklist = Blacklist.query.get(user_id)
+    if not blacklist:
+        return jsonify({"message": "The person is not found"}), 404
+
+    db.session.delete(blacklist)
+    db.session.commit()
+
+    return jsonify({"message": "The person deleted"}), 200
 
 """Contact person route"""
 # GET all json routes in contacts
@@ -109,6 +119,16 @@ def update_contact(user_id):
     return jsonify({"message": f"The user {user_id} has been updated"}), 201
 
 
+@app.route("/delete-contact/<int:user_id>", methods=["DELETE"])
+def delete_contact(user_id):
+    contact = Contact.query.get(user_id)
+    if not contact():
+        return jsonify({"message": "The person does not exist"}), 404
+
+    db.session.delete(contact)
+    db.session.commit()
+
+    return jsonify({"message": "The person has been deleted"}), 200
 
 """SpecialList person route"""
 @app.route("/special-list", methods=["GET"])
@@ -162,6 +182,17 @@ def update_speciallist(user_id):
     db.session.commit()
 
     return jsonify({"message": f"The user {user_id} has been updated"}), 201
+
+@app.route("/delete-speciallist/<int:user_id>", methods=["DELETE"])
+def delete_speciallist(user_id):
+    speciallist = SpecialList.query.get(user_id)
+    if not speciallist():
+        return jsonify({"message": "The person does not exist"}), 404
+
+    db.session.delete(speciallist)
+    db.session.commit()
+
+    return jsonify({"message": "The person has been deleted"}), 200
 
 """RealFrieldlist person route"""
 # GET all json routes in friendlist | view
@@ -227,6 +258,16 @@ def update_realfriendlist(user_id):
 
     return jsonify({"message": f"The user {user_id} has been updated"}), 201
 
+@app.route("/delete-realfriends/<int:user_id>", methods=["DELETE"])
+def delete_realfriends(user_id):
+    realfriendlist = RealFriendList.query.get(user_id)
+    if not realfriendlist():
+        return jsonify({"message": "The person does not exist"}), 404
+
+    db.session.delete(realfriendlist)
+    db.session.commit()
+
+    return jsonify({"message": "The person has been deleted"}), 200
 # Main
 if __name__ == "__main__":
     # Instantiation here
