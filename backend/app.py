@@ -37,6 +37,22 @@ def create_blacklist():
 
     return jsonify({"message": "Your hated person has been created!"}), 201
 
+@app.route("/update-blacklist/<int:user_id>", methods=["PATCH"])
+def update_blacklist(user_id):
+    blacklist = Blacklist.query.get(user_id)
+    if not blacklist:
+        return jsonify({"message": "The person is not found"}), 404
+
+    data = request.json
+    blacklist.first_name = data.get("firstName", blacklist.first_name)
+    blacklist.last_name = data.get("lastName", blacklist.last_name)
+    blacklist.created_at = data.get("createdAt", blacklist.createdAt)
+
+
+    db.session.commit()
+
+    return jsonify({"message": f"The user {user_id} has been updated"}), 201
+
 """Contact person route"""
 # GET all json routes in contacts
 @app.route("/contacts", methods=["GET"])
@@ -74,6 +90,26 @@ def create_contact():
 
     return jsonify({"message": "The contact has been created!"}), 201
 
+# Update Contact
+@app.route("/update-contact/<int:user_id>", methods=["PATCH"])
+def update_contact(user_id):
+    # Check if the user is exist
+    contact = Contact.query.get(user_id)
+    if not contact:
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.json
+    contact.first_name = data.get("firstName", contact.first_name)
+    contact.last_name = data.get("lastName", contact.last_name)
+    contact.email = data.get("email", contact.email)
+    contact.phone_number = data.get("phoneNumber", contact.phone_number)
+
+    db.session.commit()
+
+    return jsonify({"message": f"The user {user_id} has been updated"}), 201
+
+
+
 """SpecialList person route"""
 @app.route("/special-list", methods=["GET"])
 def get_speciallist():
@@ -110,6 +146,22 @@ def create_special_list():
     return jsonify({"message": "Your special person has been created!"}), 201
 
 
+@app.route("/update-speciallist/<int:user_id>", methods=["PATCH"])
+def update_speciallist(user_id):
+    speciallist = SpecialList.query.get(user_id)
+    if not speciallist:
+        return jsonify({"message": "The person is not found"}), 404
+
+    data = request.json
+    speciallist.first_name = data.get("firstName", speciallist.first_name)
+    speciallist.last_name = data.get("lastName", specialilist.last_name)
+    speciallist.personality = data.get("personality", speciallist.personality)
+    speciallist.created_at = data.get("createdAt", speciallist.created_at)
+
+
+    db.session.commit()
+
+    return jsonify({"message": f"The user {user_id} has been updated"}), 201
 
 """RealFrieldlist person route"""
 # GET all json routes in friendlist | view
@@ -157,8 +209,25 @@ def create_real_friendlist():
 
     return jsonify({"message": "A new friend has been added!"}), 201
 
+@app.route("/update-reafriends/<int:user_id>", methods=["PATCH"])
+def update_realfriendlist(user_id):
+    realfriendlist = RealFrieldlist.query.get(user_id)
+    if not realfriendlist:
+        return jsonify({"message": "The person is not found"}), 404
 
+    data = request.json
+    realfriendlist.first_name = data.get("firstName", realfriendlist.first_name)
+    realfriendlist.last_name = data.get("lastName", realfriendlist.last_name)
+    realfriendlist.age = data.get("age", realfriendlist.age)
+    realfriendlist.favorite_food = data.get("favoriteFood", realfriendlist.favorite_food)
+    realfriendlist.created_at = data.get("createdAt", realfriendlist.created_at)
+    realfriendlist.updated_at = data.get("updatedAt", realfriendlist.updated_at)
 
+    db.session.commit()
+
+    return jsonify({"message": f"The user {user_id} has been updated"}), 201
+
+# Main
 if __name__ == "__main__":
     # Instantiation here
     with app.app_context():
