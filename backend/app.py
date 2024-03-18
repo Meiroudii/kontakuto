@@ -52,6 +52,8 @@ def create_special_list():
     updated_at = request.json.get("updatedAt")
 
 
+
+
 """RealFrieldlist person route"""
 # GET all json routes in friendlist | view
 @app.route("/real-friends-list", methods=["GET"])
@@ -60,6 +62,7 @@ def get_friendlist():
     json_friendlist = list(map(lambda x: x.to_json, friendlist))
     return jsonify({"friendlist": json_friendlist})
 
+# Must test the api before working into frontend
 @app.route("/create-real-friends-list", methods=["POST"])
 def create_real_friendlist():
     first_name = request.json.get("firstName")
@@ -72,12 +75,32 @@ def create_real_friendlist():
     # Check values if exist
     if not first_name or not last_name or not age or not favorite_food or not created_at or not updated_at:
         return (
-                jsonify({"message": "You must include first name, last name, age, favorite food, created at, and update at"},
+                jsonify({"message": "You must include first name, last name, age, favorite food, created at, and update at"}),
                         400,
-                        )
-    # TODO
-    new_realfrieds = RealFriendList(first_name=first_name,
-                                    )
+
+        )
+    # If there's a valid data in database
+    # create python class coresponding the columns of the database
+    new_realfrieds = RealFriendList(
+        first_name=first_name,
+                last_name=last_name,
+                age=age,
+                favorite_food=favorite_food,
+                created_at=created_at,
+                updated_at=updated_at
+        )
+    # check if adding to the session of database is possible
+    try:
+        # staging area, ready to write into database, not yet saved
+        db.session.add(new_realfrieds)
+        # actuary write into database permanently
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "A new friend has been added!"}), 201
+
+
 
 if __name__ == "__main__":
     # Instantiation here
