@@ -4,7 +4,7 @@ from models import Contact, RealFriendList, Blacklist, SpecialList
 from waitress import serve
 
 # GET all json routes in blacklist
-"""Blacklisted person route"""
+# """Blacklisted person route"""
 @app.route("/blacklist", methods=["GET"])
 def get_blacklist():
     blacklist = Blacklist.query.all()
@@ -46,13 +46,14 @@ def update_blacklist(user_id):
     data = request.json
     blacklist.first_name = data.get("firstName", blacklist.first_name)
     blacklist.last_name = data.get("lastName", blacklist.last_name)
-    blacklist.created_at = data.get("createdAt", blacklist.createdAt)
+    blacklist.created_at = data.get("createdAt", blacklist.created_at)
+    blacklist.updated_at = data.get("updatedAt", blacklist.updated_at)
 
     db.session.commit()
 
     return jsonify({"message": f"The user {user_id} has been updated"}), 201
 
-@app.route("/delete-blacklist/<int:user_id>", methods="[DELETE]")
+@app.route("/delete-blacklist/<int:user_id>", methods=["DELETE"])
 def delete_blacklist(user_id):
     blacklist = Blacklist.query.get(user_id)
     if not blacklist:
@@ -63,7 +64,7 @@ def delete_blacklist(user_id):
 
     return jsonify({"message": "The person deleted"}), 200
 
-"""Contact person route"""
+# """Contact person route"""
 # GET all json routes in contacts
 @app.route("/contacts", methods=["GET"])
 def get_contacts():
@@ -130,7 +131,7 @@ def delete_contact(user_id):
 
     return jsonify({"message": "The person has been deleted"}), 200
 
-"""SpecialList person route"""
+#"""SpecialList person route"""
 @app.route("/special-list", methods=["GET"])
 def get_speciallist():
     speciallist = SpecialList.query.all()
@@ -194,7 +195,7 @@ def delete_speciallist(user_id):
 
     return jsonify({"message": "The person has been deleted"}), 200
 
-"""RealFrieldlist person route"""
+# """RealFrieldlist person route"""
 # GET all json routes in friendlist | view
 @app.route("/real-friends-list", methods=["GET"])
 def get_friendlist():
